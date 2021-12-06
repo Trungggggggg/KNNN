@@ -11,7 +11,7 @@ class CONRAN {
 public:
     struct Point A[100];
     int DoDai;
-    CONRAN() {
+    SNAKE() {
         DoDai = 3;
         A[0].x = 10; A[0].y = 10;
         A[1].x = 11; A[1].y = 10;
@@ -67,4 +67,79 @@ void gotoxy(int column, int line)
         GetStdHandle(STD_OUTPUT_HANDLE),
         coord
     );
+}
+
+
+Direction direction = Direction::right;
+
+// hàm vẽ khung - phạm vi chơi
+void draw_Box(int Height_Box, int Width_Box)
+{
+    for (size_t i = 0; i < Width_Box; i++)
+        cout << '=';
+    gotoxy(0, Height_Box);
+    for (size_t i = 0; i < Width_Box; i++)
+        cout << '=';
+    for (size_t i = 1; i < Height_Box; i++)
+    {
+        gotoxy(0, i);
+        cout << '|';
+    }
+    for (size_t i = 1; i < Height_Box; i++)
+    {
+        gotoxy(Width_Box, i);
+        cout << '|';
+    }
+}
+
+//vị trí rắn xuất hiện: giữa khung
+void startSnake()
+{
+    direction = Direction::right;
+    SNAKE = 
+    {
+        Point{ Width_Box / 2 + 2, Height_Box / 2 },
+        Point{ Width_Box / 2 + 1, Height_Box / 2 },
+        Point{ Width_Box / 2, Height_Box / 2 },
+        Point{ Width_Box / 2 - 1, Height_Box / 2 },
+        Point{ Width_Box / 2 - 2, Height_Box / 2 }
+    };
+}
+enum class Direction
+{
+    up,
+    right,
+    down,
+    left
+};
+
+//hàm tránh quay đầu 180 độ
+void Checking_180(char direct)
+{
+    if (direct == 'a' && direction != Direction::right)
+        direction = Direction::left;
+    else if (direct == 'x' && direction != Direction::down)
+        direction = Direction::up;
+    else if (direct == 'w' && direction != Direction::up)
+        direction = Direction::down;
+    else if (direct == 'd' && direction != Direction::left)
+        direction = Direction::right;
+    else if (direct == 'q') 
+        break;
+}
+
+// kiểm tra rắn chạm tường
+bool isHitwall()
+{
+    return SNAKE[0].x == 0 || SNAKE[0].y == 0 || SNAKE[0].x == Width_Box || SNAKE[0].y == Height_Box;
+}
+
+//kiểm tra rắn tự cắn chính mình
+bool isBiteItself()
+{
+    Point head = SNAKE[0];
+    for (size_t i = 1; i < SNAKE.size(); i++)
+        if (head.x == SNAKE[i].x && head.y == SNAKE[i].y)
+            return true;
+    return false;
 }
