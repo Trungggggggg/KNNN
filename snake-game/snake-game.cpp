@@ -3,8 +3,24 @@
 #include <cstdlib>
 #include <conio.h>
 using namespace std;
-void gotoxy(int column, int line);
-int Width_Box = 40, Height_Box = 40;
+void gotoxy(int column, int line)
+{
+    COORD coord;
+    coord.X = column;
+    coord.Y = line;
+    SetConsoleCursorPosition(
+        GetStdHandle(STD_OUTPUT_HANDLE),
+        coord
+    );
+}
+enum class Direction
+{
+    up,
+    right,
+    down,
+    left
+};
+const int Width_Box = 40, Height_Box = 20;
 struct Point {
     int x, y;
 };
@@ -28,9 +44,9 @@ public:
         for (int i = Snake_Length - 1; i > 0; i--)
             A[i] = A[i - 1];
         if (direction == Direction::right) A[0].x = A[0].x + 1;
-        if (direction == Direction::down) A[0].y = A[0].y + 1;
+        if (direction == Direction::down) A[0].y = A[0].y - 1;
         if (direction == Direction::left) A[0].x = A[0].x - 1;
-        if (direction == Direction::up) A[0].y = A[0].y - 1;
+        if (direction == Direction::up) A[0].y = A[0].y + 1;
 
     }
     // kiểm tra rắn chạm tường
@@ -48,75 +64,77 @@ public:
         return false;
     }
 };
-SNAKE r;
-int main()
-{
-    Direction direction = Direction::right;
-    char t;
-    while (1) {
-        if (kbhit()) {
-            t = getch();
-            if (t == 'a' && direction != Direction::right)
-                direction = Direction::left;
-            else if (t == 's' && direction != Direction::down)
-                direction = Direction::up;
-            else if (t == 'w' && direction != Direction::up)
-                direction = Direction::down;
-            else if (t == 'd' && direction != Direction::left)
-                direction = Direction::right;
-        }
-        system("cls");
-        r.Draw_Snake();
-        r.move(direction);
-        Sleep(300);
-    }
-
-    return 0;
-}
-
-
-void gotoxy(int column, int line)
-{
-    COORD coord;
-    coord.X = column;
-    coord.Y = line;
-    SetConsoleCursorPosition(
-        GetStdHandle(STD_OUTPUT_HANDLE),
-        coord
-    );
-}
-
-
-Direction direction = Direction::right;
-
 // hàm vẽ khung - phạm vi chơi
-void draw_Box(int Height_Box, int Width_Box)
+void draw_Box()
 {
-    for (size_t i = 0; i < Width_Box; i++)
+    for (int i = 0; i < Width_Box; i++)
         cout << '=';
     gotoxy(0, Height_Box);
-    for (size_t i = 0; i < Width_Box; i++)
+    for (int i = 0; i < Width_Box; i++)
         cout << '=';
-    for (size_t i = 1; i < Height_Box; i++)
+    for (int i = 1; i < Height_Box; i++)
     {
         gotoxy(0, i);
         cout << '|';
     }
-    for (size_t i = 1; i < Height_Box; i++)
+    for (int i = 1; i < Height_Box; i++)
     {
         gotoxy(Width_Box, i);
         cout << '|';
     }
 }
-
-
-enum class Direction
+void drawStartMenu()
 {
-    up,
-    right,
-    down,
-    left
-};
+    system("cls");
+    cout<< "########################" << endl
+        << "#                      #" << endl
+        << "#      SNAKE GAME      #" << endl
+        << "#                      #" << endl
+        << "########################" << endl << endl
+        << "________________________" << endl
+        << "Press 1 to start game" << endl
+        << "Press 2 to exit" << endl;
+}
+
+int main()
+{
+    drawStartMenu();
+    int check;
+    cin >> check;
+    if (check == 2) exit(1);
+    else if (check == 1)
+    {
+        SNAKE r;
+        system("cls");
+        Direction direction = Direction::right;
+        char t;
+        draw_Box();
+        while (1) {
+            system("cls");
+            draw_Box();
+            if (_kbhit()) {
+                t = _getch();
+                if (t == 'a' && direction != Direction::right)
+                    direction = Direction::left;
+                else if (t == 's' && direction != Direction::down)
+                    direction = Direction::up;
+                else if (t == 'w' && direction != Direction::up)
+                    direction = Direction::down;
+                else if (t == 'd' && direction != Direction::left)
+                    direction = Direction::right;
+            }
+            r.Draw_Snake();
+            r.move(direction);
+            Sleep(300);
+        }
+    }
+    return 0;
+}
+
+
+
+
+
 
 
 
