@@ -63,6 +63,11 @@ public:
                 return true;
         return false;
     }
+    //kiểm tra đầu rắn chạm mồi
+    bool isEatFood()
+    {
+        return A[0].x == Food.x && A[0].y == Food.y;
+    }
 };
 // hàm vẽ khung - phạm vi chơi
 void draw_Box()
@@ -111,11 +116,8 @@ void unitFood()
     gotoxy(x, y);
     cout << "X";
 }
-//kiểm tra đầu rắn chạm mồi
-bool isEatFood()
-{
-    return A[0].x == Food.x && A[0].y == Food.y;
-}
+
+
 int main()
 {
     drawStartMenu();
