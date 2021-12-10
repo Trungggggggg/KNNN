@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <cstdlib>
 #include <conio.h>
+#include <time.h>
 using namespace std;
 void gotoxy(int column, int line)
 {
@@ -20,10 +21,13 @@ enum class Direction
     down,
     left
 };
+
 const int Width_Box = 40, Height_Box = 20;
 struct Point {
     int x, y;
 };
+//tạo mồi random
+Point Food;
 class SNAKE {
 public:
     struct Point A[100];
@@ -100,8 +104,7 @@ void drawStartMenu()
         << "Press 1 to start game" << endl
         << "Press 2 to exit" << endl;
 }
-//tạo mồi random
-Point Food;
+
 
 void unitFood()
 {
