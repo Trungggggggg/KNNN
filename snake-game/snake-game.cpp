@@ -72,6 +72,16 @@ public:
     {
         return A[0].x == Food.x && A[0].y == Food.y;
     }
+    //tăng độ dài khi rắn ăn mồi
+    void growSnake() {
+        if (isEatFood()) {
+            Food.x = rand() % Width_Box;
+            Food.y = rand() % Height_Box;
+            A[Snake_Length - 1].x++;
+            A[Snake_Length - 1].y++;
+        }
+    }
+
 };
 // hàm vẽ khung - phạm vi chơi
 void draw_Box()
