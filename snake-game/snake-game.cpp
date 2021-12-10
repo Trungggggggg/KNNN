@@ -13,6 +13,15 @@ void gotoxy(int column, int line)
         GetStdHandle(STD_OUTPUT_HANDLE),
         coord
     );
+
+}
+void ShowConsoleCursor(bool showFlag)
+{
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(out, &cursorInfo);
+    cursorInfo.bVisible = showFlag;
+    SetConsoleCursorInfo(out, &cursorInfo);
 }
 enum class Direction
 {
@@ -140,14 +149,14 @@ int main()
     else if (check == 1)
     {
         SNAKE r;
-        system("cls");
         Direction direction = Direction::right;
         char t;
         int ascii_value;
-        draw_Box();
         while (1) {
             system("cls");
+            ShowConsoleCursor(false);
             draw_Box();
+            r.Draw_Snake();
             if (_kbhit()) {
                 t = _getch();
                 ascii_value = t;
@@ -167,7 +176,6 @@ int main()
 	            break;
             if (r.isHitwall())
 	            break;
-            r.Draw_Snake();
             Sleep(300);
         }
     }
