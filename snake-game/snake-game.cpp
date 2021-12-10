@@ -95,7 +95,27 @@ void drawStartMenu()
         << "Press 1 to start game" << endl
         << "Press 2 to exit" << endl;
 }
-void
+//tạo mồi random
+Point Food;
+
+void unitFood()
+{
+    srand(time(0));
+    int x = rand() % (Width_Box - 1) + 1;
+    int y = rand() % (Height_Box - 1) + 1;
+    Food =
+    {
+        x,
+        y,
+    };
+    gotoxy(x, y);
+    cout << "X";
+}
+//kiểm tra đầu rắn chạm mồi
+bool isEatFood()
+{
+    return A[0].x == Food.x && A[0].y == Food.y;
+}
 int main()
 {
     drawStartMenu();
