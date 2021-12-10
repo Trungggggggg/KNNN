@@ -26,7 +26,7 @@ const int Width_Box = 40, Height_Box = 20;
 struct Point {
     int x, y;
 };
-//tạo mồi random
+
 Point Food;
 class SNAKE {
 public:
@@ -105,7 +105,7 @@ void drawStartMenu()
         << "Press 2 to exit" << endl;
 }
 
-
+//tạo mồi random
 void unitFood()
 {
     srand(time(0));
@@ -139,7 +139,7 @@ int main()
             system("cls");
             draw_Box();
             if (_kbhit()) {
-                t = getch();
+                t = _getch();
                 ascii_value = t;
                 if (ascii_value == 27)
                     break;
@@ -151,12 +151,11 @@ int main()
                     direction = Direction::down;
                 else if (t == 'd' && direction != Direction::left)
                     direction = Direction::right;
-                    break;
             }
             r.move(direction);
-            if (isBiteItself())
+            if (r.isBiteItself())
 	            break;
-            if (isHitwall())
+            if (r.isHitwall())
 	            break;
             r.Draw_Snake();
             Sleep(300);
