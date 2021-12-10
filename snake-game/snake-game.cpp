@@ -133,12 +133,16 @@ int main()
         system("cls");
         Direction direction = Direction::right;
         char t;
+        int ascii_value;
         draw_Box();
         while (1) {
             system("cls");
             draw_Box();
             if (_kbhit()) {
-                t = _getch();
+                t = getch();
+                ascii_value = t;
+                if (ascii_value == 27)
+                    break;
                 if (t == 'a' && direction != Direction::right)
                     direction = Direction::left;
                 else if (t == 's' && direction != Direction::down)
@@ -147,9 +151,14 @@ int main()
                     direction = Direction::down;
                 else if (t == 'd' && direction != Direction::left)
                     direction = Direction::right;
+                    break;
             }
-            r.Draw_Snake();
             r.move(direction);
+            if (isBiteItself())
+	            break;
+            if (isHitwall())
+	            break;
+            r.Draw_Snake();
             Sleep(300);
         }
     }
