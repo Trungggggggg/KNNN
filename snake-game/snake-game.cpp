@@ -95,7 +95,7 @@ void drawStartMenu()
         << "Press 1 to start game" << endl
         << "Press 2 to exit" << endl;
 }
-
+void
 int main()
 {
     drawStartMenu();
