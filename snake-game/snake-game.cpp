@@ -82,13 +82,14 @@ public:
         return A[0].x == Food.x && A[0].y == Food.y;
     }
     //tăng độ dài khi rắn ăn mồi
-    void growSnake() {
-        if (isEatFood()) {
-            Food.x = rand() % Width_Box;
-            Food.y = rand() % Height_Box;
-            A[Snake_Length - 1].x++;
-            A[Snake_Length - 1].y++;
-        }
+    void growSnake(Direction direction)
+    {
+        Snake_Length += 1;
+        A[Snake_Length - 1] = A[Snake_Length - 2];
+        if (direction == Direction::right) A[Snake_Length - 1].x = A[Snake_Length - 1].x - 1;
+        if (direction == Direction::down) A[Snake_Length - 1].y = A[Snake_Length - 1].y + 1;
+        if (direction == Direction::left) A[Snake_Length - 1].x = A[Snake_Length - 1].x + 1;
+        if (direction == Direction::up) A[Snake_Length - 1].y = A[Snake_Length - 1].y - 1;
     }
 
 };
@@ -135,10 +136,12 @@ void unitFood()
         x,
         y,
     };
-    gotoxy(x, y);
+}
+void displayFood()
+{
+    gotoxy(Food.x, Food.y);
     cout << "X";
 }
-
 
 int main()
 {
@@ -152,11 +155,17 @@ int main()
         Direction direction = Direction::right;
         char t;
         int ascii_value;
+        unitFood();
         while (1) {
             system("cls");
             ShowConsoleCursor(false);
             draw_Box();
             r.Draw_Snake();
+            displayFood();
+            if (r.isEatFood()) {
+                r.growSnake(direction);
+                unitFood();
+            }
             if (_kbhit()) {
                 t = _getch();
                 ascii_value = t;
